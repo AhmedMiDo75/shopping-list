@@ -8,6 +8,7 @@ function addItem(e) {
   // Validate Input
   if (newItem === "") {
     alert(`Please add an item`);
+    // To stop function from executing after the alert
     return;
   }
   // Create List Item
@@ -18,7 +19,7 @@ function addItem(e) {
   itemList.appendChild(li);
   itemInput.value = "";
 }
-
+// Create button
 function createButton(classes) {
   const button = document.createElement(`button`);
   button.className = classes;
@@ -26,7 +27,7 @@ function createButton(classes) {
   button.appendChild(icon);
   return button;
 }
-
+// Create icon
 function createIcon(classes) {
   const icon = document.createElement(`i`);
   icon.className = classes;
