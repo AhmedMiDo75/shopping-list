@@ -19,7 +19,7 @@ function addItem(e) {
   const button = createButton("remove-item btn-link text-red");
   li.appendChild(button);
   itemList.appendChild(li);
-  checkUI();
+  checkUI(); // updating ui visibility after adding an element
   itemInput.value = "";
 }
 
@@ -45,7 +45,7 @@ function removeItem(e) {
     if (confirm(`Are you sure?`)) {
       // first parent is the button second is the list item
       e.target.parentElement.parentElement.remove();
-      checkUI();
+      checkUI(); // updating ui visibility after removing elements
     }
   }
 }
@@ -55,7 +55,7 @@ function clearItems(e) {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
   }
-  checkUI();
+  checkUI(); // updating ui visibility after clear elements
 }
 
 function checkUI() {
