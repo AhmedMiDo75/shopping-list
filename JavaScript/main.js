@@ -70,7 +70,22 @@ function checkUI() {
   }
 }
 
+function filterItems(e) {
+  const text = e.currentTarget.value.toLowerCase();
+  const items = itemList.querySelectorAll(`li`);
+  items.forEach((item) => {
+    // first child is the text node
+    const itemName = item.firstChild.textContent.toLowerCase();
+    if (itemName.indexOf(text) !== -1) {
+      item.style.display = "flex";
+    } else {
+      item.style.display = "none";
+    }
+  });
+}
+
 // EventListener
 itemForm.addEventListener(`submit`, addItem);
 itemList.addEventListener(`click`, removeItem);
 clearBtn.addEventListener(`click`, clearItems);
+filter.addEventListener(`input`, filterItems);
