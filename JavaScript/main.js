@@ -4,8 +4,6 @@ const itemList = document.getElementById(`item-list`);
 const clearBtn = document.getElementById(`clear`);
 const filter = document.getElementById(`filter`);
 
-
-
 function onAddItemSubmit(e) {
   e.preventDefault();
   const newItem = itemInput.value;
@@ -58,6 +56,12 @@ function getItemsFromStorage() {
   return itemsFromStorage;
 }
 
+function onClickItem(e) {
+  if (e.target.parentElement.classList.contains("remove-item")) {
+    removeItem(e.target.parentElement.parentElement);
+  }
+}
+
 function addItemToStorage(item) {
   let itemFromStorage = getItemsFromStorage();
   // Add new item to array
@@ -73,14 +77,22 @@ function displayItems() {
 }
 
 // Removing items
-function removeItem(e) {
-  if (e.target.parentElement.classList.contains("remove-item")) {
-    if (confirm(`Are you sure?`)) {
-      // first parent is the button second is the list item
-      e.target.parentElement.parentElement.remove();
-      checkUI(); // updating ui visibility after removing elements
-    }
+function removeItem(item) {
+  if (confirm(`Are You Sure?`)) {
+    // Rmove Item From DOM
+    item.remove();
+    // Remove Item From Storage
+    removeItemFromStorage(item.textContent)
   }
+  checkUI();
+}
+
+function removeItemFromStorage(item) {
+  let itemsFromStorage = getItemsFromStorage();
+  // Filter out item to be removed
+  itemsFromStorage = itemsFromStorage.filter((i) => i !== item);
+  // Re-set to localstorage
+  localStorage.setItem("items", JSON.stringify(itemsFromStorage))
 }
 
 // Clear items
@@ -88,6 +100,8 @@ function clearItems(e) {
   while (itemList.firstChild) {
     itemList.removeChild(itemList.firstChild);
   }
+  // Clear From LocalStorage
+  localStorage.removeItem("items") // you can also use clear method
   checkUI(); // updating ui visibility after clear elements
 }
 
@@ -123,7 +137,7 @@ checkUI(); // updating ui visibility after the content loaded
 function init() {
   // EventListener
   itemForm.addEventListener(`submit`, onAddItemSubmit);
-  itemList.addEventListener(`click`, removeItem);
+  itemList.addEventListener(`click`, onClickItem);
   clearBtn.addEventListener(`click`, clearItems);
   filter.addEventListener(`input`, filterItems);
   document.addEventListener(`DOMContentLoaded`, displayItems);
