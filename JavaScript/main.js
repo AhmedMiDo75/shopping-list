@@ -4,11 +4,7 @@ const itemList = document.getElementById(`item-list`);
 const clearBtn = document.getElementById(`clear`);
 const filter = document.getElementById(`filter`);
 
-function displayItems() {
-  const itemsFromStorage = getItemsFromStorage();
-  itemsFromStorage.forEach((item) => addItemToDOM(item));
-  checkUI();
-}
+
 
 function onAddItemSubmit(e) {
   e.preventDefault();
@@ -52,14 +48,6 @@ function createIcon(classes) {
   return icon;
 }
 
-function addItemToStorage(item) {
-  let itemFromStorage = getItemsFromStorage();
-  // Add new item to array
-  itemFromStorage.push(item);
-  // Convert to JSON String And Set to local storage
-  localStorage.setItem("items", JSON.stringify(itemFromStorage));
-}
-
 function getItemsFromStorage() {
   let itemsFromStorage;
   if (localStorage.getItem("items") === null) {
@@ -68,6 +56,20 @@ function getItemsFromStorage() {
     itemsFromStorage = JSON.parse(localStorage.getItem("items"));
   }
   return itemsFromStorage;
+}
+
+function addItemToStorage(item) {
+  let itemFromStorage = getItemsFromStorage();
+  // Add new item to array
+  itemFromStorage.push(item);
+  // Convert to JSON String And Set to local storage
+  localStorage.setItem("items", JSON.stringify(itemFromStorage));
+}
+
+function displayItems() {
+  const itemsFromStorage = getItemsFromStorage();
+  itemsFromStorage.forEach((item) => addItemToDOM(item));
+  checkUI();
 }
 
 // Removing items
