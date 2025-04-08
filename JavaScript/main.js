@@ -3,6 +3,8 @@ const itemInput = document.getElementById(`item-input`);
 const itemList = document.getElementById(`item-list`);
 const clearBtn = document.getElementById(`clear`);
 const filter = document.getElementById(`filter`);
+const formBtn = itemForm.querySelector("button");
+let isEditMode = false;
 
 function onAddItemSubmit(e) {
   e.preventDefault();
@@ -56,12 +58,6 @@ function getItemsFromStorage() {
   return itemsFromStorage;
 }
 
-function onClickItem(e) {
-  if (e.target.parentElement.classList.contains("remove-item")) {
-    removeItem(e.target.parentElement.parentElement);
-  }
-}
-
 function addItemToStorage(item) {
   let itemFromStorage = getItemsFromStorage();
   // Add new item to array
@@ -76,13 +72,31 @@ function displayItems() {
   checkUI();
 }
 
+function onClickItem(e) {
+  if (e.target.parentElement.classList.contains("remove-item")) {
+    removeItem(e.target.parentElement.parentElement);
+  } else {
+    setItemToEdit(e.target);
+  }
+}
+
+function setItemToEdit(item) {
+  isEditMode = true;
+  // Removing the gray color from li when i select another one
+  itemList.querySelectorAll(`li`).forEach(i => i.classList.remove("edit-mode"))
+  item.classList.add(`edit-mode`);
+  formBtn.innerHTML = `<i class="fa-solid fa-pen"></i> Update Item`;
+  formBtn.style.backgroundColor = `#228b22`
+  itemInput.value = item.textContent
+}
+
 // Removing items
 function removeItem(item) {
   if (confirm(`Are You Sure?`)) {
-    // Rmove Item From DOM
+    // Remove Item From DOM
     item.remove();
     // Remove Item From Storage
-    removeItemFromStorage(item.textContent)
+    removeItemFromStorage(item.textContent);
   }
   checkUI();
 }
@@ -92,7 +106,7 @@ function removeItemFromStorage(item) {
   // Filter out item to be removed
   itemsFromStorage = itemsFromStorage.filter((i) => i !== item);
   // Re-set to localstorage
-  localStorage.setItem("items", JSON.stringify(itemsFromStorage))
+  localStorage.setItem("items", JSON.stringify(itemsFromStorage));
 }
 
 // Clear items
@@ -101,7 +115,7 @@ function clearItems(e) {
     itemList.removeChild(itemList.firstChild);
   }
   // Clear From LocalStorage
-  localStorage.removeItem("items") // you can also use clear method
+  localStorage.removeItem("items"); // you can also use clear method
   checkUI(); // updating ui visibility after clear elements
 }
 
