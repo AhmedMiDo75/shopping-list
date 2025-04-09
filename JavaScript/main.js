@@ -15,6 +15,15 @@ function onAddItemSubmit(e) {
     // To stop function from executing after the alert
     return;
   }
+  // Check for the edit mode
+  if (isEditMode) {
+    const itemToEdit = itemList.querySelector(".edit-mode");
+    // Remove the text and class and the element
+    removeItemFromStorage(itemToEdit.textContent);
+    itemToEdit.classList.remove("edit-mode");
+    itemToEdit.remove();
+    isEditMode = false;
+  }
   // Create Item DOM Element
   addItemToDOM(newItem);
   // Add item to local storage
@@ -81,13 +90,16 @@ function onClickItem(e) {
 }
 
 function setItemToEdit(item) {
+  // When click on the list item the edit mode will be true
   isEditMode = true;
   // Removing the gray color from li when i select another one
-  itemList.querySelectorAll(`li`).forEach(i => i.classList.remove("edit-mode"))
+  itemList
+    .querySelectorAll(`li`)
+    .forEach((i) => i.classList.remove("edit-mode"));
   item.classList.add(`edit-mode`);
   formBtn.innerHTML = `<i class="fa-solid fa-pen"></i> Update Item`;
-  formBtn.style.backgroundColor = `#228b22`
-  itemInput.value = item.textContent
+  formBtn.style.backgroundColor = `#228b22`;
+  itemInput.value = item.textContent;
 }
 
 // Removing items
@@ -129,6 +141,10 @@ function checkUI() {
     clearBtn.style.display = "block";
     filter.style.display = "block";
   }
+  formBtn.innerHTML = '<i class="fa-solid fa-plus"></i> Add Item';
+  formBtn.style.backgroundColor = "#333";
+  itemInput.value = "";
+  isEditMode = false;
 }
 
 function filterItems(e) {
